@@ -10,6 +10,7 @@ var Address = {
   }
 };
 
+var Phone = {};
 
 $(document).ready(function() {
   $("#add-address").click(function() {
@@ -65,7 +66,10 @@ $(document).ready(function() {
     $('.phone-numbers').each(function() {
       var inputtedPhoneNumber = $(this).find('input.new-phone').val();
 
-      newContact.phoneNumbers.push(inputtedPhoneNumber);
+      var newPhone = Object.create(Phone);
+      newPhone.number = inputtedPhoneNumber;
+
+      newContact.phoneNumbers.push(newPhone);
     });
 
     $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
@@ -82,8 +86,8 @@ $(document).ready(function() {
         $('ul#addresses').append('<li>' + address.fullAddress() + '</li>');
       });
       $('ul#phone-numbers').text("");
-      newContact.phoneNumbers.forEach(function(number) {
-        $('ul#phone-numbers').append('<li>' + number + '</li>');
+      newContact.phoneNumbers.forEach(function(phoneNumber) {
+        $('ul#phone-numbers').append('<li>' + phoneNumber.number + '</li>');
       });
     });
   this.reset();
