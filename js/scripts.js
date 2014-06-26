@@ -7,10 +7,46 @@ var Contact = {
 var Address = {
   fullAddress: function() {
     return this.street + ", " + this.city + ", " + this.state;
+  },
+  valid: function() {
+    if((this.street === '') || (this.city === '') || (this.state === '')) {
+      return false;
+    } else {
+      return true;
+    }
+
+    var goodInput = /^[\w ]+$/;
+
+
+    if((!goodInput.test(this.street)) ||
+      (!goodInput.test(this.city)) ||
+      (!goodInput.test(this.state))) {
+      return false;
+    } else {
+      return true;
+    }
+    
   }
 };
 
-var Phone = {};
+
+
+var Phone = {
+  valid: function() {
+  if(this.number === ''){
+      return false;
+    } else {
+      return true;
+    }
+
+    var goodInput = /^[\d ]+$/;
+    if(!goodInput.test(this.number)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+};
 
 $(document).ready(function() {
   $("#add-address").click(function() {
@@ -61,15 +97,24 @@ $(document).ready(function() {
       newAddress.city = inputtedCity;
       newAddress.state = inputtedState;
 
-      newContact.addresses.push(newAddress);
+      if(newAddress.valid()) {
+        newContact.addresses.push(newAddress);
+      } else {
+        alert("Sorry, you must fill in a street, city and state, with only numbers and letter characters. Try again.");
+      }
     });
+
     $('.phone-numbers').each(function() {
       var inputtedPhoneNumber = $(this).find('input.new-phone').val();
 
       var newPhone = Object.create(Phone);
       newPhone.number = inputtedPhoneNumber;
 
-      newContact.phoneNumbers.push(newPhone);
+      if (newPhone.valid()) {
+        newContact.phoneNumbers.push(newPhone);
+      } else {
+        alert("Sorry, you must fill in a phone number, and it must be only number characters.");
+      }
     });
 
     $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
